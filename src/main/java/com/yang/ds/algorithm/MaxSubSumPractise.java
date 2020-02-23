@@ -71,6 +71,4 @@ public class MaxSubSumPractise {
         // 返回左边，中间、右边，最大的值
         return maxSumList.get(0);
     }
-
-
 }

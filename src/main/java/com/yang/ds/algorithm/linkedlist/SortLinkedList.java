@@ -23,7 +23,7 @@ public class SortLinkedList {
 
         @Override
         public String toString() {
-            return "BinaryNode{" +
+            return "BSNode{" +
                     "data=" + data +
                     ", next=" + next +
                     '}';

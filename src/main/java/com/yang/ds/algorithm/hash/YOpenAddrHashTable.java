@@ -29,7 +29,7 @@ import com.yang.ds.algorithm.utils.YUtils;
  * 要求:
  * (质数,非0的整数,除了自己和1整除，没有其他公约数,否则就是合数,1既不是质数也不是合数)
  *
- * 1. 数组的长度必须是质数，因为只有质数，无论补偿是多少，都不会出现整除现象，不出现整除，也就说明不会循环，所谓循环就是不断的进行数组 [0,2,4,6],[0,2,4,6],[0,2,4,6]....
+ * 1. 数组的长度必须是质数，因为只有质数，无论步长是多少，都不会出现整除现象，不出现整除，也就说明不会循环，所谓循环就是不断的进行数组 [0,2,4,6],[0,2,4,6],[0,2,4,6]....
  * 这样循环，导致没有把数组的所有位置遍历到
  *
  * 2. constant 为质数
@@ -89,6 +89,7 @@ public class YOpenAddrHashTable<K, V> extends AbstractHashTable<K, V> {
         while ((tmp = (Node) table[idx]) != null && !tmp.isDeleted()) {
             idx = (idx + step) % table.length;
         }
+        // 可以优化，对象复用
         table[idx] = new Node(key, value);
         size++;
     }
@@ -187,8 +188,8 @@ public class YOpenAddrHashTable<K, V> extends AbstractHashTable<K, V> {
         table.put("y5", "z5");
         System.out.println(table.toString());
         table.put("y6", "z6");
-        /*table.remove("y2");*/
-        System.out.println(table.get("y1"));
+        table.remove("y2");
+        System.out.println(table.get("y2"));
         System.out.println(table.toString());
     }
 }

@@ -123,7 +123,7 @@ public class YArrayList<E> {
         // 找到元素的值
         E oldValue = elementData(index);
         // 数组删除需要位置移动，就是删除之后的元素全部都要向前移动，java中的实现是数组拷贝实现
-        int numMoved = size - 1 - index;
+        int numMoved = (size - index) - 1;
         if (numMoved > 0) {// 存在需要移动的元素个数，因为不是最后一个元素
             // 脑补吧，不想写了，就是把原来数组删除的元素"索引"之后的数据然后再复制到这个数组，但是开始位置变了，从删除的那个位置开始覆盖，这样就把原来index的那个数据覆盖掉了
             System.arraycopy(elementData, index + 1, elementData, index, numMoved);

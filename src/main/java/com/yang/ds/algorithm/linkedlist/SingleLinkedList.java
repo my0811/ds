@@ -148,7 +148,7 @@ public class SingleLinkedList {
 
         @Override
         public String toString() {
-            return "BinaryNode{" +
+            return "BSNode{" +
                     "data=" + data +
                     ", next=" + next +
                     '}';

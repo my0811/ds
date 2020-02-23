@@ -1,9 +1,16 @@
 package com.yang.ds.algorithm.queue;
 
 /**
+ *
+ *
+ *
  * 基于数组实现，单向循环队列
  * 1. 针对于数组实现
  * 2. 循环队列,指针到达数组的最后一个下标，重新返回数组第一个坐标
+ * 复杂度:
+ * 入队:,出队都是O(1),因为删除队列的元素，不需要将数组元素移动，并且对应的位置元素可以服用
+ *
+ * 对头指针，和队尾指针要一直根据数据的添加和删除，变化，一直指向
  */
 public class OneWayLoopArrayQueue {
 
@@ -15,7 +22,7 @@ public class OneWayLoopArrayQueue {
 
     //当前队列中的数据个数
     private int nElements;
-    
+
     // 队列后端指针
     private int rear;
 
@@ -32,7 +39,7 @@ public class OneWayLoopArrayQueue {
 
     /**
      * 循环队列，如果插入到数组最后一个位置，让队列插入端指针，重新指向数组最开始的下标
-     * 入队
+     * 入队，队尾入队
      */
 
     public boolean insert(Object data) {
@@ -62,7 +69,7 @@ public class OneWayLoopArrayQueue {
     }
 
     /**
-     * 出队
+     * 出队,队头出队，删除元素
      */
     private Object remove() {
         if (isEmpty()) {

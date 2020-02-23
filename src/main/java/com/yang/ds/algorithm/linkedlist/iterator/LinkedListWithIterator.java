@@ -25,7 +25,7 @@ public class LinkedListWithIterator<T> implements LinkedListInterface<T> {
 
         @Override
         public String toString() {
-            return "BinaryNode{" +
+            return "BSNode{" +
                     "data=" + data +
                     ", next=" + next +
                     '}';

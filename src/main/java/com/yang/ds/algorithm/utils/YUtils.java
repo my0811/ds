@@ -82,12 +82,12 @@ public class YUtils {
         if (nm6 != 1 && nm6 != 5) {
             return false;
         }
-        // 第三层优化，判断质数只要判断到这个树的开平方就行了，去平方根的左侧一半的数就可了，平方根右侧的数是对称的
+        // 第三层优化，判断质数只要判断到这个树的开平方就行了，去平方根的左侧一半的数就可了，平方根右侧的数是对称的(如果能整除一个数，那么他的倍数肯定也能整除，所以开平方，缩小范围)
         // 开平方如果不能开的话，向下取整也没问题，说明那个小数的临界值是除不开的,不是他的倍数
         int sqrt = (int) Math.sqrt(n);
-        // 进入这里说明肯定是大于最大余等于数5的数了，而且无论是6的多少倍又余多少，余数在1-5的都被排除掉了，只需要每次按照6的倍数增加就可以了
+        // 第一次初始进入肯定是5，因为<3的质数已经排除，所以不是1，只能是5，之后就判断是不是6两侧的就可以了
         for (int i = 5; i <= sqrt; i += 6) {
-            if (n % i == 0 && n != i) {
+            if (n % i == 0 || n % (i + 2) == 0) {
                 return false;
             }
         }
@@ -111,5 +111,9 @@ public class YUtils {
         bitSize |= bitSize >>> 8;
         bitSize |= bitSize >>> 16;//  32位搞定
         return bitSize <= 0 ? defaultSize : (bitSize > maxSize ? maxSize : bitSize + 1);
+    }
+
+    public static void main(String[] args) {
+        System.out.println(YUtils.isPrime(49));
     }
 }

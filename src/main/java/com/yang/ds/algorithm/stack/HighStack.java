@@ -45,8 +45,11 @@ public class HighStack {
         if (isEmpty()) {
             throw new IllegalArgumentException(" stack is empty");
         }
+        Object obj = elementData[top];
+        elementData[top] = null;
+        top--;
         size--;
-        return elementData[top--];
+        return obj;
     }
 
     /**
