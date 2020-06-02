@@ -10,7 +10,7 @@ import java.util.Arrays;
 public class ArrayQuickSort {
 
     public static void main(String[] args) {
-        int data[] = {3, 6, 9, 5, 1};
+        int data[] = {3, 2};
         // int data[] = {99, 88, 77, 66, 55, 44, 33, 22, 11, 9, 8, 7, 6, 5, 4, 3, 1, 2};
         System.out.println(Arrays.toString(data));
         quickSort(data, 0, data.length - 1);
@@ -42,10 +42,10 @@ public class ArrayQuickSort {
      */
     private static int partition(int[] data, int left, int right) {
 
-        //左边界指针
+        //左边界指针,left默认都是从left开始的，所以left直接和第二个比较即可，先++从第二个开始
         int i = left;
 
-        //右边界指针( 加1是为了下面循环的优雅写法，要不就少了最后一个元素了)
+        //右边界指针( 加1是为了下面循环的优雅写法，要不就少了最后一个元素了),每次操作先--
         int j = right + 1;
 
         // 默认基准值；默认被分割的数组的第一个元素，可以用三项取中算法优化
@@ -116,6 +116,5 @@ public class ArrayQuickSort {
             swap(data, left, mid);
         }
         return data[left];
-
     }
 }

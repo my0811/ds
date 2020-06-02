@@ -11,6 +11,4 @@ public interface BSNode<K extends Comparable<? super K>, V> {
     BSNode<K, V> right();
 
     BSNode<K, V> parent();
-
-
 }

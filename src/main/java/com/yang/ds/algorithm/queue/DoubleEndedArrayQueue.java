@@ -45,7 +45,7 @@ package com.yang.ds.algorithm.queue;
  * 0   1    2   3   4    5                  所以数据出现这种情况是最后一次插入完成了，而此时的数组刚好满了
  * A   B    G   D   E    F                  这也是为什么tail设置为指向下一个插入的元素的位置的巧妙的地方了
  * 扩容后
- * h              t
+ * h                 t
  * 0  1  2  3  4  5  6  7  8  9  10  11     1.扩容后把头部数据从左到右的顺序放到新数组前面
  * D  E  F  A  B  G  [] [] [] [] []  []     2.然后把尾部数据按照从左到右顺序放到新数组头部数据元素后面
  * <p>                                      3.头指针指向新数组的(第一个位置),尾指针指向(原来数据长度)的(最后一个位置)
@@ -181,16 +181,17 @@ public class DoubleEndedArrayQueue {
         // 扩容大小
         int newSize = maxSize << 1; // 注意位移方向，向左乘2^n，向右除2^n
         Object[] newObjArr = new Object[newSize];
-        // 获取前端元素个数 ，计算方式看类注释的图
+        // 获取head端元素个数 ，计算方式看类注释的图
         int hc = maxSize - head;
         // 获取后端元素个数,计算方式看类注释的图
         int tc = head;
         // 先复制头部数组   原数组,开始索引,新数组,新数组开始位置,复制原数组元素个数
         System.arraycopy(elements, head, newObjArr, 0, hc);// 把前端插入数据复制到新数组的前面部分
         // 先复制尾部数组   原数组,开始索引,新数组,新数组开始位置,复制原数组元素个数
-        System.arraycopy(elements, 0, newObjArr, hc, tc);
+        System.arraycopy(elements, 0, newObjArr, hc, tc);// 尾部索引指向的下一个插入位置，所以就是head+1-1个元素
         // 前端指针指向0
         head = 0;
+        // 指向的是一个空位置，因为tail指向的是下一个需要插入的位置
         tail = maxSize;
         this.maxSize = newSize;
         this.elements = newObjArr;

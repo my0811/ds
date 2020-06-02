@@ -1,12 +1,13 @@
 package com.yang.ds.algorithm.linkedlist;
 
 /**
+ * 双端链表，就很积累
  * 双端链表(无序)
  * 插入O(1)
  * 查找O(N)
- * 双端链表只是两端都可以添加数据，但是遍历还是只能一个方向，不同于双向链表，双端链表指针的方向只有一个方向
+ * 双端链表只是两端都可以添加数据，但是删除只能一端，但是遍历还是只能一个方向，不同于双向链表，双端链表指针的方向只有一个方向
  */
-public class DoubleLinkedList {
+public class DoubleEndedLinkedList {
 
     // 链表大小
     private int size;
@@ -27,7 +28,7 @@ public class DoubleLinkedList {
         }
     }
 
-    public DoubleLinkedList() {
+    public DoubleEndedLinkedList() {
         this.size = 0;
         head = null;
         tail = null;
@@ -41,6 +42,9 @@ public class DoubleLinkedList {
         if (size == 0) {
             head = tail = newNode;
         } else {
+            // ?是否会被GC呢？,注意引用关系，如果更改一个对象的引用关系的时候要考虑到这个对象的引用链是否失效
+            // 否则会带来gc的问题
+            System.gc();
             newNode.next = head;
             head = newNode;
         }
@@ -150,13 +154,12 @@ public class DoubleLinkedList {
 
 
     public static void main(String[] args) {
-        DoubleLinkedList doubleLinkedList = new DoubleLinkedList();
+        DoubleEndedLinkedList doubleLinkedList = new DoubleEndedLinkedList();
         doubleLinkedList.addHead(1);
         doubleLinkedList.addTail(2);
         doubleLinkedList.addTail(3);
         //doubleLinkedList.deleteHead();
         doubleLinkedList.delete(3);
         doubleLinkedList.print();
-
     }
 }

@@ -5,6 +5,8 @@ import java.util.Random;
 /**
  * 解决数字直角三角形的最大值路径
  * 1.每个数字只有从上到下或者右下方两条路径
+ * 2.其实思路就是二叉树的遍历是一样的，双递归函数搞定问题
+ *
  * <p>
  * 1
  * 2 3
@@ -17,7 +19,7 @@ public class TriangleMaxRoute {
     Random random = new Random();
 
     /**
-     * 初始化二维数组，随机数
+     * 初始化二维数组，随机数,初始化，三角形数组
      */
     public TriangleMaxRoute() {
         for (int i = 1; i <= 3; i++) {
@@ -43,7 +45,7 @@ public class TriangleMaxRoute {
     }
 
     /**
-     * 为了便于理解，行和列的编号都是从
+     * 为了便于理解，行和列的编号都是从1开始的
      */
     public int maxSumRoute(int i, int j) {
         if (i >= 2) {// 递归边界条件，数组行数为2行

@@ -59,7 +59,6 @@ public class LinkedListWithIterator<T> implements LinkedListInterface<T> {
         public void remove() {
 
         }
-
     }
 
     @Override

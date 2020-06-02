@@ -25,7 +25,7 @@ public class DAGImpl<K, V> extends AbstractGraph<K, V> implements DAG<K, V> {
         for (; copyDAG.size != 0; ) {
             // 获取没有邻接边的顶点
             int bounder = copyDAG.getWithoutAdjV();
-            if (bounder == -1) {
+            if (bounder == -1) {// 出现无环图的情况
                 break;
             }
             // 倒叙放入数组，这样就不需要再对数组反转了
@@ -71,6 +71,7 @@ public class DAGImpl<K, V> extends AbstractGraph<K, V> implements DAG<K, V> {
                     return i;
                 }
             }
+            // 出现了循环，不是无环图
             return -1;
         }
 
@@ -83,7 +84,7 @@ public class DAGImpl<K, V> extends AbstractGraph<K, V> implements DAG<K, V> {
             if (moved > 0) {
                 System.arraycopy(adjMat, bounder + 1, adjMat, bounder, moved);
             }
-            // 如果移动完，或者是删除最后一个元素，则直接干掉，GC
+            // 如果移动完，或者是删除最后一个元素，则直接干掉，GC，干掉一行，每一个行都是一个数组对象
             adjMat[size - 1] = null;// GC
 
             int[] col;
@@ -95,6 +96,7 @@ public class DAGImpl<K, V> extends AbstractGraph<K, V> implements DAG<K, V> {
                 // 干掉最后一个空余出来的位置的元素，或者本来删除的就是数组尾巴的元素
                 col[size - 1] = 0;
             }
+            // 二维数组干掉了行和列
             size--;
         }
     }

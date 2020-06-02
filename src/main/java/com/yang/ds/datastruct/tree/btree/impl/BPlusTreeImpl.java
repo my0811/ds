@@ -163,18 +163,20 @@ public class BPlusTreeImpl<K extends Comparable<? super K>, V> implements BPlusT
             /*
             * 如果存在右侧兄弟则获取，如果没有说明删除的key在第二层，B-tree不会出现替换key为空，B+的话，如果出现null一定是删除的key
              在第二层，无需处理，一定会触发合并操作，删除父节点中上提的key，所以也不用替换
+             2.满足B+树的性质，叶子节点最左侧的叶子节点的key在上层节点也有对应，替换还是一样能找到,尽管用了右侧兄弟节点的key
             * */
                 if (indexer.hasRightSib()) {
                     repKey = getChild(indexer.rightSibIdx()).keys().get(0);
                 }
             }
+            // 每一层递归都会调用，所以要都判断上，必须要这层递归查找到了，才替换
             if (loc >= 0 && repKey != null) {
                 keys.set(loc, repKey);
             }
             // 删除如果下溢出，则进行平衡修复
             if (child.isUnderflow()) {
                 BNode newRoot = fixBalance(child, this, indexer);
-                // 根分裂
+                // 根节点下溢出了，用上一次合并的主节点作为新的根
                 if (root.keyNumber() == 0 && newRoot != null) {
                     root = newRoot;
                 }
@@ -254,6 +256,7 @@ public class BPlusTreeImpl<K extends Comparable<? super K>, V> implements BPlusT
             // split new node
             InnerNode<K, V> rightSib = new InnerNode(degree);
             rightSib.keys.addAll(keys().subList(from, to));
+            // +1是右侧孩子的位置
             rightSib.children.addAll(children().subList(from + 1, to + 1));
             //GC
             keys.subList(from, to).clear();
@@ -284,6 +287,7 @@ public class BPlusTreeImpl<K extends Comparable<? super K>, V> implements BPlusT
 
         public LeafNode(int degree) {
             super(degree);
+            // 与m阶相等的大小，因为装到m个元素之后再分裂
             values = new ArrayList<>(degree);
         }
 
@@ -297,7 +301,7 @@ public class BPlusTreeImpl<K extends Comparable<? super K>, V> implements BPlusT
                 keys.add(addLoc, key);
                 values.add(addLoc, value);
             }
-            // 判断是否触发分裂
+            // 判断是否触发分裂,首次添加是叶子分裂，先分裂根
             if (root.isOverflow()) {
                 root = splitRoot(this, split());
             }
@@ -343,6 +347,7 @@ public class BPlusTreeImpl<K extends Comparable<? super K>, V> implements BPlusT
             int keyNumber = keyNumber();
             K leftFirstKey = rightSib.keys().remove(0);
             V leftFirstValue = rightSib.values().remove(0);
+            // size代表下一个插入的位置,size-len>0才扩容
             keys().add(keyNumber, leftFirstKey);
             values().add(keyNumber, leftFirstValue);
 
@@ -366,7 +371,7 @@ public class BPlusTreeImpl<K extends Comparable<? super K>, V> implements BPlusT
 
         @Override
         public BNode split() {
-            // key截取的开始和结束位置
+            // key截取的开始和结束位置,sublist用最大索引-开始索引截取的，所以会少一个，也就是不包含尾,结束索引不能超过数组长度
             int from = keyNumber() / 2, to = keyNumber();
 
             // new Node

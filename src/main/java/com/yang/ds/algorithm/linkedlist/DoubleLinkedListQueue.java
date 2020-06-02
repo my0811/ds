@@ -6,11 +6,11 @@ package com.yang.ds.algorithm.linkedlist;
  */
 public class DoubleLinkedListQueue {
 
-    private DoubleLinkedList doubleLinkedList;
+    private DoubleEndedLinkedList doubleLinkedList;
 
 
     public DoubleLinkedListQueue() {
-        this.doubleLinkedList = new DoubleLinkedList();
+        this.doubleLinkedList = new DoubleEndedLinkedList();
     }
 
 
@@ -56,5 +56,4 @@ public class DoubleLinkedListQueue {
         queue.insert(3);
         queue.display();
     }
-
 }

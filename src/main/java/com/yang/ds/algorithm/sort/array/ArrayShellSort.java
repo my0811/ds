@@ -4,84 +4,70 @@ import java.util.Arrays;
 
 /**
  * 希尔排序-插入排序的基础优化
- * TODO 算法复杂度
+ * 复杂度O(N^3/2)
+ * 证明希尔排序的算法复杂度在O(N^3/2),是一个平方阶范围，要比O(N^2)优化一些，但是还不能与
+ * 归并、快排、堆排序相提并论，归并、快排、堆，都是在NlogN的范围的算法复杂度
+ *
+ * 希尔排序也是一个贪婪算法，首先插入排序就算法是贪婪算法，但是插入排序的问题就是如果数据不是按照，顺序大体有序，只是部分
+ * 乱序，比如初夏6,5,4,3,2,1的情况，其复杂度和冒泡没有区别,所以希尔的思想是，每次插入排序移动的步数太小了，可以先移动步数
+ * 很大，然后步数逐步减小，最后一次减小到1，也就是插入排序，这样可以保证最后一次的插入排序，的时候，基本大体有序，只需要部分
+ * 微调即可，也就解决了插入排序的6,5,4,3,2,1的问题
+ *
+ *
+ *
+ *
  */
 public class ArrayShellSort {
 
-
-    /**
-     * 插入排序
-     */
-
-    private static void insertSort(int[] arr) {
-        if (null == arr || arr.length <= 0) {
-            throw new IllegalArgumentException("error array params！");
-        }
-        if (arr.length == 1) {
-            return;
-        }
-        // 实现插入排序
-        int inner;
-        int outer;
-        int tmp;
-        for (outer = 1; outer < arr.length; outer++) {
-            tmp = arr[outer];
-            inner = outer;
-            for (; inner > 0 && arr[inner - 1] > tmp; ) {
-                arr[inner] = arr[--inner];
-            }
-            arr[inner] = tmp;
-        }
-    }
-
-    /**
-     * 希尔排序
-     * ps:当step等于1的时候其实不就是插入排序吗？只不过这个时候插入排序已经不需要移动那么多次数了，因为答题的顺序已经差不多了，就是微调一下就行了
-     * 不会出现那种极端的情况，一个元素前面的元素全部都比自己大，出现O(N)的情况
-     */
-
-    public static void shellSort(int[] arr) {
-        // 边界异常处理
-        if (null == arr || arr.length <= 0) {
-            throw new IllegalArgumentException("error array params！");
-        }
-        if (arr.length == 1) {
-            return;
-        }
-        // 希尔排序
-        int outer;
-        int inner;
-        int tmp;
-        int len = arr.length;
-        // 最外层循环，控制每次插入移动的间隔,最后一一次就是一个插入排序，间隔为1
-        // 最好的间隔是所有的step间隔互为质数，（没有公约数，除了1和本身）,step/2.2是一种采取的方式
-        for (int step = len / 2; step > 0; step = step / 2) {
-            // 插入排序的最外层循环
-            for (outer = step; outer < len; outer++) {
-                inner = outer;
-                tmp = arr[outer];
-                // 插入排序的位置移动
-                for (; inner - step >= 0 && tmp < arr[inner - step]; ) {
-                    arr[inner] = arr[inner - step];
-                    inner = inner - step;
-                }
-                // 插入排序目标位置插入
-                arr[inner] = tmp;
-            }
-            System.out.println("间隔:[" + step + "] :" + Arrays.toString(arr));
-        }
-    }
-
     public static void main(String[] args) {
-        int[] arr = new int[]{4, 2, 1, 6};
+        int[] arr = new int[]{6, 5, 4, 3, 2, 1, 8, 9, 7};
+        shell3StepSort(arr);
         System.out.println(Arrays.toString(arr));
-        insertSort(arr);
-        System.out.println(Arrays.toString(arr));
-        System.out.println("shell--------------------------");
-        int[] arr2 = new int[]{4, 2, 1, 6, 9, 2, 3, 5, 1, 1};
-        System.out.println("排序前: " + Arrays.toString(arr2));
-        shellSort(arr2);
-        System.out.println("排序后：" + Arrays.toString(arr2));
     }
 
+
+    private static void shellSort(int[] arr) {
+        int step;
+        int len = arr.length;
+        for (step = len / 2; step > 0; step = (step / 2)) {
+            // 默认初次访问位置再step上，所以这个索引-step一定是0
+            for (int o = step; o < len; o++) {
+                int tmp = arr[o];
+                int i = o;
+                // 这个需要=0临界值判断，普通插入因为step是1，所以>0就判断出来了,=0说明最后一个已经处理完了
+                for (; (i - step) >= 0 && arr[i - step] > tmp; ) {
+                    arr[i] = arr[i = i - step];
+                }
+                if (i != o) {
+                    arr[i] = tmp;
+                }
+            }
+        }
+    }
+
+    /**
+     * 希尔排序步长，优化，step 与数组长度互为质数的的情况下，经过试验证明是比较好的
+     * 也就是说step和数组长度，没有其他公因式，只有1
+     * 1. 在step 不小于len/3,则step=step*3+1
+     * 2. step递减为 (step-1)/3
+     *
+     * */
+    private static void shell3StepSort(int[] arr) {
+        int len = arr.length;
+        int step = 1;
+        while (step <= len / 3) {
+            step = step * 3 + 1;
+        }
+        for (; step > 0; step = (step - 1) / 3) {// 步长控制，互质
+
+            for (int o = step; o < len; o++) {//插入从默认从1开始现在改成从指定的step开始
+                int i = o;
+                int tmp = arr[i];
+                while (i - step >= 0 && arr[i - step] > tmp) {
+                    arr[i] = arr[i = (i - step)];
+                }
+                arr[i] = tmp;
+            }
+        }
+    }
 }

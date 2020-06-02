@@ -31,7 +31,7 @@ public class ArrayMergeSort {
         // 处理数组比对之后剩余的情况
         // 1. a多余b
         for (; aIdx < a.length; ) {
-            c[cIdx++] = a[aIdx];
+            c[cIdx++] = a[aIdx++];
         }
         // 2.b多余a
         for (; bIdx < b.length; ) {
@@ -57,7 +57,7 @@ public class ArrayMergeSort {
             mergeRecursion(c, l, mid); // 左半部分拆分递归，解决每一个左部分的问题
             mergeRecursion(c, mid + 1, h);// 有半部分查分递归，解决每一个右半边数组的排序问题
             //两个部分都完成之后进行数组进行合并，执行两个有序数组进行排序，合并成一个新的有序数组
-            merge(c, l, mid, h);
+            merge(c, l, h, mid);
         }
         return c;
     }
@@ -69,7 +69,7 @@ public class ArrayMergeSort {
     private static void merge(int[] c, int l, int h, int mid) {
         int i = l;
         int j = mid + 1;
-        int[] tmp = new int[(h - l) + 1];
+        int[] tmp = new int[h - l + 1];
         int k = 0;
 
         // 实现合并
@@ -87,7 +87,7 @@ public class ArrayMergeSort {
         }
 
         // 情况2：右半部分数组,处理其中一个有序数组剩余的数据
-        while (j <= h && i > mid) {
+        while (i > mid && j <= h) {
             tmp[k++] = c[j++];
         }
 
@@ -98,10 +98,11 @@ public class ArrayMergeSort {
     }
 
     public static void main(String[] args) {
-        int[] c = mergeFor(new int[]{1, 3, 5, 7}, new int[]{2, 4, 6, 8, 9});
-        System.out.println("for循环实现归并排序:" + Arrays.toString(c));
+        /*int[] c = mergeFor(new int[]{1, 3, 5, 7}, new int[]{2, 4, 6, 8, 9});
+        System.out.println("for循环实现归并排序:" + Arrays.toString(c));*/
 
-        int[] d = mergeRecursion(new int[]{6, 3, 4, 2}, 0, 3);
+        int[] arr = new int[]{4, 5, 1, 3, 8};
+        int[] d = mergeRecursion(arr, 0, arr.length - 1);
         System.out.println("递归实现归并排序:" + Arrays.toString(d));
     }
 }

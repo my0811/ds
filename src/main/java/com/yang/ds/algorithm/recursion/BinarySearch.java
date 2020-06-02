@@ -1,61 +1,57 @@
 package com.yang.ds.algorithm.recursion;
 
 /**
- * 递归实现二分查找
+ * 递归实现二分查找 O(logN)
  * 递归有时候想不明白就想一想分治算法的思想，大的问题觉得复杂，就先想最后一个小问题，然后把小问题递归处理
  */
 public class BinarySearch {
 
 
-    public static int binarySearchFor(int[] arr, int val) {
+    /**
+     * 二分查找，循环处理思想
+     * */
+    private int binarySearch(int key, int[] arr) {
+        if (null == arr || arr.length <= 0) {
+            return -1;
+        }
         int low = 0;
         int high = arr.length - 1;
-        int mid;
-        for (; low <= high; ) {
-            mid = (low + high) / 2;
-            //查找方向在上边界
-            if (arr[mid] < val) {
-                low = mid + 1;
-            } else if (arr[mid] > val) {//查找方向在下边界
+        while (low <= high) {
+            int mid = (low + high) >>> 1;
+            if (key < arr[mid])
                 high = mid - 1;
-            } else {
+            else if (key > arr[mid])
+                low = mid + 1;
+            else
                 return mid;
-            }
         }
-        // 没有查到
-        return -1;
+        // -0的情况排除，可能low的值没变，后者比low还小,所以要+1在取反，用的时候自行取反
+        return -(low + 1);
     }
 
     /**
-     * 递归实现二分查找
-     */
-
-    public static int binarySearchRecursion(int[] arr, int val, int low, int high) {
-        /**
-         * 中间值
-         * */
-        int mid = (low + high) / 2;
-        // 边界条件处理,必须要第一个考虑，递归什么时候结束
-        if (arr[mid] == val) {
-            return mid;
-        } else if (low > high) {
+     * 递归处理二分查找，分治算法思想
+     *
+     * */
+    private int bsRec(int low, int high, int key, int[] arr) {
+        // 校验
+        if (null == arr || arr.length <= 0) {
             return -1;
         }
-        /**
-         * 没有到达边界值
-         * */
-        if (arr[mid] > val) { //在数组的下边界
-            return binarySearchRecursion(arr, val, low, mid - 1); //无论调用多少次，都会不断向上返回，返回之后就直接return
-        } else if (arr[mid] < val) {//在数组上边界
-            return binarySearchRecursion(arr, val, mid + 1, high);
+        // 递归边界值
+        if (low > high) {
+            return -(low + 1);
+        }
+        int mid = (low + high) >>> 1;
+        if (key > arr[mid]) {
+            // 分治，左半部分数组
+            return bsRec(mid + 1, high, key, arr);
+        } else if (key < arr[mid]) {
+            // 分治，有半部分数组
+            return bsRec(low, mid - 1, key, arr);
         } else {
-            return -1;
+            // 命中
+            return mid;
         }
-    }
-
-    public static void main(String[] args) {
-        int[] arr = new int[]{1, 2, 3, 4, 6};
-        System.out.println("binarySearchFor index: " + binarySearchFor(arr, 4));
-        System.out.println("binarySearchRecursion index:" + binarySearchRecursion(arr, 4, 0, arr.length - 1));
     }
 }

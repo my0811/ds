@@ -31,7 +31,7 @@ public class PriorityArrayQueue {
     private int[] elements;
 
     // 队列中的元素个数
-    private int nelements;
+    private int size;
 
     // 数组最大长度
     private int maxSize;
@@ -39,7 +39,7 @@ public class PriorityArrayQueue {
     public PriorityArrayQueue(int size) {
         this.elements = new int[size];
         this.maxSize = size;
-        nelements = 0;
+        this.size = 0;
     }
 
     /**
@@ -48,14 +48,14 @@ public class PriorityArrayQueue {
 
     public void insert(int data) {
         // 判断队列是否已经满了
-        if (nelements == maxSize) {
+        if (size == maxSize) {
             throw new RuntimeException("queue is full");
         }
-        if (nelements == 0) {// 队列为空
-            elements[nelements++] = data;
+        if (size == 0) {// 队列为空
+            elements[size++] = data;
         } else {
             // 数组最后面的位置的数据是最小的
-            int p = nelements - 1;
+            int p = size - 1;
 
             while (p >= 0 && data > elements[p]) {
                 elements[p + 1] = elements[p];
@@ -63,7 +63,7 @@ public class PriorityArrayQueue {
             }
             // 因为不断的把数据向后移动，所以判断到最后一个不比自己小的数据，上一个位置已经是空的了，也就是要存放的数据的位置
             elements[p + 1] = data;
-            nelements++;
+            size++;
         }
     }
 
@@ -72,10 +72,10 @@ public class PriorityArrayQueue {
      */
 
     private int peek() {
-        if (nelements == 0) {
+        if (size == 0) {
             throw new RuntimeException("queue is empty");
         }
-        return elements[nelements - 1];
+        return elements[size - 1];
     }
 
     /**
@@ -83,12 +83,12 @@ public class PriorityArrayQueue {
      */
 
     private int remove() {
-        if (nelements == 0) {
+        if (size == 0) {
             throw new RuntimeException("queue is empty");
         }
-        int removeData = elements[nelements - 1];
-        elements[nelements - 1] = -1;
-        nelements--;
+        int removeData = elements[size - 1];
+        elements[size - 1] = -1;
+        size--;
         return removeData;
     }
 
@@ -104,6 +104,6 @@ public class PriorityArrayQueue {
     }
 
     public boolean isEmpty() {
-        return nelements == 0;
+        return size == 0;
     }
 }

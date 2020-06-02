@@ -2,6 +2,8 @@ package com.yang.ds.algorithm.hash;
 
 import com.yang.ds.algorithm.utils.YUtils;
 
+import java.util.Hashtable;
+
 /**
  * hash表实现，操作操作复杂度基本定格在O(1)
  * 解决hash冲突的方式采用开放地址的方式，具体实现就是线性探索
@@ -25,7 +27,7 @@ import com.yang.ds.algorithm.utils.YUtils;
  * 基于二次探测步长的问题，进行优化，我们没测探测的补偿，不是固定的逐渐增加，而是根据元素的key再算出来一个步长，这样不同元素的步长经过hash都会尽量不一样
  * 从而相当于又对步长进行了一次hash
  * 算法专家，又牛逼了，说如下算法比较好:
- * stepSize=constant-key%size
+ * stepSize=constant-key%constant
  * 要求:
  * (质数,非0的整数,除了自己和1整除，没有其他公约数,否则就是合数,1既不是质数也不是合数)
  *
@@ -129,8 +131,9 @@ public class YOpenAddrHashTable<K, V> extends AbstractHashTable<K, V> {
      * @param key 需要再次hash的key
      * */
     private int reHash(K key) {
-        int constant = 7;
-        return constant - (hash(key) % table.length);
+        int constant = 17;
+        // 取模范围在0到16，step 方位在17~1
+        return constant - (hash(key) % constant);
     }
 
     public String toString() {

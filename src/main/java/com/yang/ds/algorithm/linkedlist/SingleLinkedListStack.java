@@ -14,10 +14,10 @@ package com.yang.ds.algorithm.linkedlist;
  * */
 public class SingleLinkedListStack {
     // 单链表
-    private SingleLinkedList link;
+    private SingleWayLinkedList link;
 
     public SingleLinkedListStack() {
-        this.link = new SingleLinkedList();
+        this.link = new SingleWayLinkedList();
     }
 
     /**

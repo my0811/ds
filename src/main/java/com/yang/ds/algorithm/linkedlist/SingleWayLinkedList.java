@@ -15,7 +15,7 @@ package com.yang.ds.algorithm.linkedlist;
  *---------------
  *
  * */
-public class SingleLinkedList {
+public class SingleWayLinkedList {
 
     // 链表的节点数
     private int size;
@@ -25,7 +25,7 @@ public class SingleLinkedList {
     /**
      * 初始化，没有数据，头节点是null
      */
-    public SingleLinkedList() {
+    public SingleWayLinkedList() {
         this.size = 0;
         head = null;
     }
@@ -51,7 +51,7 @@ public class SingleLinkedList {
             return null;
         }
         Object data = head.getData();
-        head = head.next;
+        head = head.next; //GC了
         size--;
         return data;
     }
@@ -87,7 +87,6 @@ public class SingleLinkedList {
                 }
             }
             previous = x;
-
         }
         return true;
     }
@@ -156,7 +155,7 @@ public class SingleLinkedList {
     }
 
     public static void main(String[] args) {
-        SingleLinkedList singleLinkedList = new SingleLinkedList();
+        SingleWayLinkedList singleLinkedList = new SingleWayLinkedList();
         singleLinkedList.addHead("A");
         singleLinkedList.addHead("B");
         singleLinkedList.addHead("C");

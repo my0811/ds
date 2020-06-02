@@ -70,7 +70,7 @@ public class BSTreeImpl<K extends Comparable<? super K>, V> extends AbstractBSTr
             Node child = needDel.left != null ? needDel.left : needDel.right;
             // 删除节点是root则需要把root节点更换成删除节点的孩子节点
             if (needDel == root) {
-                root = child;
+                replaceRoot(child);
             } else {
                 addChild(lr, needDel.parent, child);
             }
@@ -93,7 +93,7 @@ public class BSTreeImpl<K extends Comparable<? super K>, V> extends AbstractBSTr
             } else {
                 addChild(lr, needDel.parent, replacement);
             }
-            // 链接删除节点做孩子
+            // 链接删除节点左孩子
             addChild(LEFT, replacement, needDel.left);
             // 链接删除节点右孩子，如果后继节点的父节点是删除节点，则无需处理右侧孩子
             if (replacement.parent != needDel) {

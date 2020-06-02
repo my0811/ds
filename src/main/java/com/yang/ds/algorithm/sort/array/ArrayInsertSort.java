@@ -3,14 +3,30 @@ package com.yang.ds.algorithm.sort.array;
 import java.util.Arrays;
 
 /**
- * 插入排序算法
- */
+ * 插入排序
+ * 插入排序其实是一种贪婪算法的思路:
+ * 每次不要求数组全部都是有序的，但是每次保证一小部分是有序的，后面的处理会基于弱序的在排序，将会更加减少判断的次数
+ * 处理方式：类似于二叉堆的调整，每次都是移动，空出来的位置就是插入位置
+ *
+ * 要求数组整体是一种从小到大的这种弱序，可以进行微调的移动就可以了，乱序的比较平均比如:
+ * 6,3,5,9,7,8，但是整体感觉还是从小到大，可以理解把数组切成很多部分，左面的部分比右面的部分小，每个部分间的数据可以
+ * 没什么顺序，但是整体要有个大的顺序,或者是平衡的关系，分割成的每部分数据没有强的从小到大，或者从大到小的顺序，这样只需要
+ * 微调每一个小部分的数组基本就能满足了整体的排
+ * 但是极端情况下：6，5，4，3，2，1,这种情况与冒泡没啥区别，只不过是冒泡的相反处理，冒泡是随着最大值的出现，判断和交换越来越少
+ * 插入则正好相反，随着遍历移动和判断则越来越多
+ * 所以插入的排序如果考虑最坏的情况下也是O(N^2),但是平均的话应该要由于选择和冒泡
+ *
+ *
+ *
+ *
+ *
+ * */
 public class ArrayInsertSort {
     public static void main(String[] args) {
-        Integer[] arr = new Integer[]{3, 1, 4, 6};
-        System.out.println(Arrays.toString(arr));
+        int[] arr = new int[]{5, 8, 6, 1, 2, 3};
         insertSort(arr);
         System.out.println(Arrays.toString(arr));
+
     }
 
     /**
@@ -18,21 +34,21 @@ public class ArrayInsertSort {
      * I.头脑要想象出，插入排序的动态效果图
      */
 
-    private static void insertSort(Integer[] arr) {
-        int outer;
-        int inner;
-        int tmp;
-        // 内边界和外边界在数组的第二个位置开始的
-        for (outer = 1; outer < arr.length; outer++) {
-            inner = outer;
-            tmp = arr[outer];
-            while (inner > 0 && arr[inner - 1] > tmp) {
-                // 大的向后移动
-                arr[inner] = arr[inner - 1];
-                --inner;
+    private static void insertSort(int[] arr) {
+        // 插入选择位置从第二个元素开始，因为每次都把前面大的挪到当前位置，然后空出来的位置插入小的值
+
+        // 外层循环一样，但是要每个元素都处理一遍
+        for (int o = 1; o < arr.length; o++) {
+            int i = o;
+            int tmp = arr[i];
+            // i后--，所以不能循环到邻接值，到了邻接值就是插入位置了,因为每次都先移动
+            while (i > 0 && arr[i - 1] > tmp) {
+                arr[i] = arr[--i];
             }
-            // 移动完成，插入空位
-            arr[inner] = tmp;
+            // 跳出循环就是插入位置
+            if (i != o) {// 说明前面没有比自己大的，前面都比自己小，自己就是这个小部分的最大值，还向前插入个毛线
+                arr[i] = tmp;
+            }
         }
     }
 }

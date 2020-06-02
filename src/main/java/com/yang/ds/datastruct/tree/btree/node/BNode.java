@@ -81,7 +81,7 @@ public interface BNode<K extends Comparable<? super K>, V> {
 
     /**
      * 元素key个数
-     * @return 返回当前节点元素key的个数
+     * @return 返回当前节点元素key的个数,删除和移动，数组的大小都会变的
      * */
     int keyNumber();
 }

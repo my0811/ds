@@ -1,15 +1,15 @@
 package com.yang.ds.algorithm.linkedlist;
 
 /**
- * 双向链表
+ * 双端双向链表(双向链表，node节点指向两个方向，双端则是两端都可以操作)
  * 双向链表就是一个队列，可以直接当队列用,头部添加尾部删除,尾部添加头部删除,一端添加，另一端删除，就可以实现队列
  */
-public class DoubleWayLinkedList {
+public class DoubleWayEndedLinkedList {
     private Node head;
     private Node tail;
     private int size;
 
-    public DoubleWayLinkedList() {
+    public DoubleWayEndedLinkedList() {
         this.head = null;
         this.tail = null;
         this.size = 0;
@@ -96,6 +96,7 @@ public class DoubleWayLinkedList {
         for (Node x = head; x != null; x = x.next) {
             if (x.data.equals(data)) {// 找到删除元素
                 Object removeObj = x.data;
+                // x的引用还在局部变量表中，不会被gc掉
                 x.prev.next = x.next;
                 x.next.prev = x.prev;
                 // 两步操作猛如虎，直接就把这个元素到头部root节点head 和到尾部root节点的指针引用链切断，没人搭理x这个元素了，等jvm小哥哥GC掉就ok了
@@ -121,7 +122,7 @@ public class DoubleWayLinkedList {
     }
 
     public static void main(String[] args) {
-        DoubleWayLinkedList doubleWayLinkedList = new DoubleWayLinkedList();
+        DoubleWayEndedLinkedList doubleWayLinkedList = new DoubleWayEndedLinkedList();
         doubleWayLinkedList.addHead(1);
         doubleWayLinkedList.addHead(2);
         doubleWayLinkedList.addTail(3);
@@ -132,7 +133,5 @@ public class DoubleWayLinkedList {
         doubleWayLinkedList.deleteHead();
         doubleWayLinkedList.delete(3);
         doubleWayLinkedList.print();
-
     }
-
 }

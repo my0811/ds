@@ -19,6 +19,7 @@ package com.yang.ds.datastruct.graph;
  *     ↘ D ↗
  *
  *
+ * Directed Acyclic Graph
  * */
 public interface DAG<K,V> extends Graph<K,V> {
     /**

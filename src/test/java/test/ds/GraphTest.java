@@ -229,7 +229,7 @@ public class GraphTest {
         graph.addEdge(new Edge("C", "F", 6));
         graph.addEdge(new Edge("D", "E", 12));
         graph.addEdge(new Edge("E", "F", 7));
-        System.out.println(graph.mPath("A", "F"));
+        System.out.println(graph.mPath("A", "A"));
     }
 
     /**

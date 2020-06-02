@@ -161,10 +161,7 @@ import java.util.List;
  *
  * */
 public interface Graph<K, V> {
-    /**
-     * 添加顶点
-     * @param vertex 传入顶点
-     * */
+
     void add(Vertex<K, V> vertex);
 
     /**
